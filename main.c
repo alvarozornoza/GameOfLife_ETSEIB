@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 // CONSTANTS
-const int block = ' ' | A_REVERSE;
+#define block  ' ' | A_REVERSE
 const long period = 1000 * 500; // MICROS
 // Main variables
 int WIDTH;
@@ -24,7 +24,7 @@ chtype **createField(int sqy, int sqx) {
   }
   for (int y = 0; y < sqy; y++) {
     for (int x = 0; x < sqx; x++)
-      f[y][x] = ' ';
+      f[y][x] = block; //  ' ';
   }
   return f;
 }
@@ -62,7 +62,7 @@ void printToSubwindow(WINDOW *w) {
   wrefresh(win);
   for (int j = 0; j < HEIGHT; j++) {
     for (int i = 0; i < WIDTH; i++) {
-      mvwaddch(w, j, i, (char)field[j][i]);
+      mvwaddch(w, j, i, field[j][i]);
     }
   }
   wrefresh(win);
@@ -75,7 +75,6 @@ void printToSubwindow(WINDOW *w) {
 void drawSquare() {
   int xx, yy;
   getmaxyx(stdscr, yy, xx);
-
   WIDTH = xx - 2;
   HEIGHT = yy - 3;
   printw("W :%d, H :%d", WIDTH, HEIGHT);
@@ -125,25 +124,19 @@ void startGame() {
 int main() {
   startGame();
   win = subwin(stdscr, HEIGHT, WIDTH, 2, 1);
+  // TODO setField();
+  mvwaddch(win, 0, 0, block);
+  wprintw(win, "aqui");
+  wrefresh(win);
   do {
-    resetWindow();
-    mvwaddch(win, 0, 0, block);
-    mvwaddch(win, 5, 0, block);
-    wprintw(win, "aqui");
-
-    mvwaddch(win, 5, 5, block);
-    mvwaddch(win, 15, 0, block);
-    wrefresh(win);
+    readSubwindow(win); // get state.
+    // TODO calculateNextState(); // Modify
+    printToSubwindow(w);
     refresh();
     usleep(1000);
   } while (false);
-
-  refresh(); /* Print it on to the real screen */
-  // readSubwindow(win);
   getch(); /* Wait for user input */
   printToSubwindow(win);
-  mvwprintw(win, 4, 4, "NEW");
-  mvprintw(4, 2, "QSA");
   wrefresh(win);
   refresh();
   getch();
