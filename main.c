@@ -47,8 +47,12 @@ void printFieldToStdout() {
  * TODO
  */
 void readSubwindow(WINDOW *w) {
-  for (int i = 0; i < HEIGHT; i++)
-    winchstr(w, field[i]);
+  for (int j = 0; j < HEIGHT; j++) {
+    // printf("%d:\t%s \n",i,(char*) field[i]);
+    for (int i = 0; i < WIDTH; i++) {
+      field[j][i] = mvwinch(w,j,i);
+    }
+  }
 }
 /**
  * Fills the window with the values of the field
