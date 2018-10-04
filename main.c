@@ -128,18 +128,18 @@ int main() {
   mvwaddch(win, 0, 0, block);
   wprintw(win, "aqui");
   wrefresh(win);
+  getch();
+  printToSubwindow(win);
+  refresh();
+  getch();
   do {
     readSubwindow(win); // get state.
     // TODO calculateNextState(); // Modify
-    printToSubwindow(w);
+    printToSubwindow(win);
     refresh();
     usleep(1000);
   } while (false);
   getch(); /* Wait for user input */
-  printToSubwindow(win);
-  wrefresh(win);
-  refresh();
-  getch();
   enditall();
   //  readSubwindow(win);
   //  printFieldToStdout();
