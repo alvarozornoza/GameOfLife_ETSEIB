@@ -133,9 +133,9 @@ void mymove(chtype c){
   switch(c)
   {
 	  case 'w':
-		  rmove(1,0);break;
-	  case 's':
 		  rmove(-1,0);break;
+	  case 's':
+		  rmove(1,0);break;
 	  case 'd':
 		  rmove(0,1);break;
 	  case 'a':
@@ -152,10 +152,11 @@ int main() {
   wrefresh(win);
   move(3,2);
   chtype in = getch();
+  // INIT
   while(in !=' '){
     in = getch();
     mymove(in);
-    if (in = '\n') {
+    if (in == '\n') {
       addch(block);
       rmove(0,-1);
     }
