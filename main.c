@@ -5,27 +5,37 @@
 #include <unistd.h>
 
 // CONSTANTS
-#define block  ' ' | A_REVERSE
+#define live  ' ' | A_REVERSE
+#define dead ' '
 const long period = 1000 * 500; // MICROS
 // Main variables
 int WIDTH;
 int HEIGHT;
 WINDOW *win;
 chtype **field;
-
+int xx;
+int yy;
+int nextMove;
+bool sow = true;
 /**
  * WORKS
  */
+
+
+
 chtype **createField(int sqy, int sqx) {
   chtype **f = (chtype **)malloc(sizeof(chtype *) * sqy);
   for (int j = 0; j < sqy; j++) {
     f[j] = (chtype *)malloc(sizeof(chtype) * sqx);
     // Init to spaces
   }
+
   for (int y = 0; y < sqy; y++) {
     for (int x = 0; x < sqx; x++)
-      f[y][x] = block; //  ' ';
+      f[y][x] = dead;
+      //  ' ';
   }
+  //getInputF(f);
   return f;
 }
 /**
@@ -119,18 +129,77 @@ void startGame() {
   resetWindow();
   refresh(); /* Print it on to the real screen */
   field = createField(HEIGHT, WIDTH);
+
 }
 
+void setField(chtype **field) {
+  xx = 0;
+  yy = 0;
+  while(sow){
+    nextMove = getch();
+    switch (nextMove) {
+      case KEY_UP:
+           if( xx>0){
+             --xx;
+             wmove(win,xx,yy);
+             wrefresh(win);
+           }
+           break;
+      case KEY_DOWN:
+           if(xx<HEIGHT){
+             ++xx;
+             wmove(win,xx,yy);
+             wrefresh(win);
+           }
+           break;
+      case KEY_RIGHT:
+           if(yy<WIDTH){
+             ++yy;
+             wmove(win,xx,yy);
+             wrefresh(win);
+           }
+      case KEY_LEFT:
+           if(yy>0){
+             --yy;
+             wmove(win,xx,yy);
+             wrefresh(win);
+           }
+      case KEY_ENTER:
+
+           //field[xx][yy] = (field[xx][yy]==live) ? live:dead;
+           if( field[xx][yy]==live ) {
+             field[xx][yy] = dead;
+           }
+           else{ field[xx][yy] = live;}
+
+
+           printToSubwindow(win);
+           break;
+      default:
+           sow = false;
+    }
+}
+}
 int main() {
   startGame();
   win = subwin(stdscr, HEIGHT, WIDTH, 2, 1);
+
+  keypad(stdscr,true);
+  noecho();
+  //refresh();
   // TODO setField();
-  mvwaddch(win, 0, 0, block);
-  wprintw(win, "aqui");
-  wrefresh(win);
-  getch();
+  //mvwaddch(win, 0, 0, live);
+
+  //wprintw(win, "aqui");
+  //wrefresh(win);
+
+
+
+
+//  getch();
   printToSubwindow(win);
   refresh();
+  setField(field);
   getch();
   do {
     readSubwindow(win); // get state.
