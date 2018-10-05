@@ -119,6 +119,28 @@ void startGame() {
   resetWindow();
   refresh(); /* Print it on to the real screen */
   field = createField(HEIGHT, WIDTH);
+  noecho();
+}
+
+void rmove(int b, int a){
+	int y,x;
+	getyx(stdscr,y,x);
+	move(y+b,x+a);
+}
+
+
+void mymove(chtype c){
+  switch(c)
+  {
+	  case 'w':
+		  rmove(1,0);break;
+	  case 's':
+		  rmove(-1,0);break;
+	  case 'd':
+		  rmove(0,1);break;
+	  case 'a':
+		  rmove(0,-1);break;
+  }
 }
 
 int main() {
@@ -128,7 +150,21 @@ int main() {
   mvwaddch(win, 0, 0, block);
   wprintw(win, "aqui");
   wrefresh(win);
+  move(3,2);
+  chtype in = getch();
+  while(in !=' '){
+    in = getch();
+    mymove(in);
+    if (in = '\n') {
+      addch(block);
+      rmove(0,-1);
+    }
+    wrefresh(win);
+    refresh();
+  }
+
   getch();
+
   printToSubwindow(win);
   refresh();
   getch();
