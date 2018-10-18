@@ -68,6 +68,7 @@ void printToSubwindow(WINDOW *w) {
   wrefresh(win);
 }
 /**
+
  * Draws the border of the field game.
  * + for vertexes
  * | or - for edges
@@ -75,27 +76,28 @@ void printToSubwindow(WINDOW *w) {
 void drawSquare() {
   int xx, yy;
   getmaxyx(stdscr, yy, xx);
-  WIDTH = xx - 2;
-  HEIGHT = yy - 3;
-  printw("W :%d, H :%d", WIDTH, HEIGHT);
-  int xpadding = 0;
-  int ypadding = 1;
-  int topx = xpadding + WIDTH + 1;
-  int topy = ypadding + HEIGHT + 1;
-  // Drawing top-bottom ends
-  mvaddch(ypadding, xpadding, '+');
-  mvaddch(topy, xpadding, '+');
-  mvaddch(ypadding, topx, '+');
-  mvaddch(topy, topx, '+');
-  // Drawing borders
-  for (int x = xpadding + 1; x < topx; x++) {
-    mvaddch(ypadding, x, '-');
-    mvaddch(topy, x, '-');
+  WIDTH = xx;
+  HEIGHT = yy;
+  int limitx = WIDTH - 1;
+  int limity = HEIGHT - 1;
+  
+  // Drawing corners of the subwindow
+  mvaddch(Y_PADDING, X_PADDING, '+');
+  mvaddch(limity, X_PADDING, '+');
+  mvaddch(Y_PADDING, limitx, '+');
+  mvaddch(limity, limitx, '+');
+  
+  // Drawing borders of the subwindow
+  for (int y = Y_PADDING + 1; y < limity; y++) {
+    mvaddch(y, X_PADDING, '|');
+    mvaddch(y, limitx, '|');
   }
-  for (int y = ypadding + 1; y < topy; y++) {
-    mvaddch(y, xpadding, '|');
-    mvaddch(y, topx, '|');
+   for (int x = X_PADDING + 1; x < limitx; x++) {
+      mvaddch(Y_PADDING, x, '-');
+      mvaddch(limity, x, '-'); 
   }
+  }
+
 }
 
 /**
