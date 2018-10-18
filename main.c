@@ -128,17 +128,20 @@ void rmove(int b, int a){
 	move(y+b,x+a);
 }
 
-
 void mymove(chtype c){
   switch(c)
   {
 	  case 'w':
+    case 'W':
 		  rmove(-1,0);break;
 	  case 's':
+    case 'S':
 		  rmove(1,0);break;
 	  case 'd':
+    case 'D':
 		  rmove(0,1);break;
 	  case 'a':
+    case 'A':
 		  rmove(0,-1);break;
   }
 }
