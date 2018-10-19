@@ -113,8 +113,8 @@ void drawSquare() {
 
 void printMenu(){
   printw("Conway's Game of Live\n");
-  printw("Press W (up), S (down), A(right) or D(left) to move, SPACE to fill the cell, ENTER to start, P to pause and ESC to exit\n");
-  printw("Press 1 to print figure R-Pentomino, Diehard (2), Acorn (3)\n");
+  printw("Press W (up), S (down), A(right) or D(left) to move, SPACE to fill the cell, ENTER to start, P to pause aland ESC to exit\n");
+  printw("Press 1 to print figure R-Pentomino, Diehard (2), Acorn (3), Gosper Glider (4)\n");
 }
 
 /**
@@ -212,7 +212,7 @@ void getPredefinedFigure(chtype in){
           readfileAndPrint(RPENTOMINO);
         break;
         case '4':
-          readfileAndPrint(PEOPLE);
+          readfileAndPrint(GOSPER_GLIDER);
         break;
     }
 }
@@ -388,7 +388,7 @@ int main() {
     changes = calculateNextState(); // Modify
     printFieldToSubwindow();
     wrefresh(win);
-    usleep(50000);
+    usleep(100000);
     if(!handlePossibles())
       break;
   } while (changes);
