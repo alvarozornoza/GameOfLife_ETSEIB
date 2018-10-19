@@ -2,9 +2,13 @@
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "figures.h"
+
+	
+#define ESCAPE_BUTTON 27
 
 // CONSTANTS
 #define BLOCK  ' ' | A_REVERSE
@@ -109,7 +113,7 @@ void drawSquare() {
 
 void printMenu(){
   printw("Conway's Game of Live\n");
-  printw("Press W (up), S (down), A(right) or D(left) to move, SPACE to fill the cell, ENTER to start the game and ESC to exit\n");
+  printw("Press W (up), S (down), A(right) or D(left) to move, SPACE to fill the cell, ENTER to start, P to pause and ESC to exit\n");
   printw("Press 1 to print figure R-Pentomino, Diehard (2), Acorn (3)\n");
 }
 
@@ -236,23 +240,23 @@ void convolution_2D(int numberOfNeighbours[][REAL_WIDTH]) {
 
 bool updateFieldWithNextState(int numberOfNeighbours[][REAL_WIDTH]) {
   bool **new_field;
+  int changes = 0;
   new_field = createField(REAL_HEIGHT,REAL_WIDTH);
   for (int i = 0; i < REAL_HEIGHT; i++) {    // rows
     for (int j = 0; j < REAL_WIDTH; j++) {   // columns
       if(field[i][j] && (numberOfNeighbours[i][j] == 2 || numberOfNeighbours[i][j] == 3))
          new_field[i][j] = true;
       else if(!field[i][j] && numberOfNeighbours[i][j] == 3)
-        new_field[i][j] = true;
+         new_field[i][j] = true;
+      if(new_field[i][j] != field[i][j])
+        changes++;
     }
   }
-  if(field == new_field){
-    field = new_field;
-    return false;
-  }
-  else{
-    field = new_field;
+  field = new_field;
+  if(changes > 0)
     return true;
-  }
+  else
+    return false;
 }
 // void printnumberOfNeighbours(int numberOfNeighbours[][REAL_WIDTH]){
 //   for (int i = 0; i < REAL_HEIGHT; i++) {    // rows
@@ -295,11 +299,55 @@ bool updateFieldWithNextState(int numberOfNeighbours[][REAL_WIDTH]) {
 //   }
 // }
 
-void calculateNextState(){
+bool calculateNextState(){
   int numberOfNeighbours[REAL_HEIGHT][REAL_WIDTH];
   convolution_2D(numberOfNeighbours);
-  updateFieldWithNextState(numberOfNeighbours);
+  return updateFieldWithNextState(numberOfNeighbours);
 }
+
+int kbhit(void)
+{
+  struct termios oldt, newt;
+  int ch;
+  int oldf;
+ 
+  tcgetattr(STDIN_FILENO, &oldt);
+  newt = oldt;
+  newt.c_lflag &= ~(ICANON | ECHO);
+  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+ 
+  ch = getchar();
+  fflush(stdin);
+ 
+  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+  fcntl(STDIN_FILENO, F_SETFL, oldf);
+ 
+  if(ch != EOF)
+  {
+    ungetc(ch, stdin);
+    return 1;
+  }
+ 
+  return 0;
+}
+
+bool handlePossibles(){
+  chtype ch = getch();
+  if(ch == ESCAPE_BUTTON) 
+    return false;
+  else if(ch == 'P' || ch == 'p'){
+    fflush(stdin);
+    scrollok(stdscr, FALSE);
+    nodelay(stdscr, FALSE);
+    while(getch() != ('p' || 'P'))
+      return true;
+  }
+  else 
+    return true;
+}
+
 
 int main() {
   startGame();
@@ -331,16 +379,21 @@ int main() {
   if(!predefinedFigure)
     readSubwindow();
 
+  bool changes = false;
   do {
     readSubwindow();
     curs_set(0);
-    calculateNextState(); // Modify
+    scrollok(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
+    changes = calculateNextState(); // Modify
     printFieldToSubwindow();
     wrefresh(win);
-    usleep(100000);
-  } while (true);
-  getch(); /* Wait for user input */
+    usleep(50000);
+    if(!handlePossibles())
+      break;
+  } while (changes);
   enditall();
+  return -1;
 }
 
 /*************************************************/
