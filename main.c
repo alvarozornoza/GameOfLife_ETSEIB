@@ -258,46 +258,6 @@ bool updateFieldWithNextState(int numberOfNeighbours[][REAL_WIDTH]) {
   else
     return false;
 }
-// void printnumberOfNeighbours(int numberOfNeighbours[][REAL_WIDTH]){
-//   for (int i = 0; i < REAL_HEIGHT; i++) {    // rows
-//     for (int j = 0; j < REAL_WIDTH; j++) {   // columns
-//       switch(numberOfNeighbours[i][j]){
-//         case 0:
-//           mvwaddch(win, i, j,'0');
-//         break;
-//         case 1:
-//           mvwaddch(win, i, j,'1');
-//         break;
-//         case 2:
-//           mvwaddch(win, i, j,'2');
-//         break;
-//         case 3:
-//           mvwaddch(win, i, j,'3');
-//         break;
-//         case 4:
-//           mvwaddch(win, i, j,'4');
-//         break;
-//         case 5:
-//           mvwaddch(win, i, j,'5');
-//         break;
-//         case 6:
-//           mvwaddch(win, i, j,'6');
-//         break;
-//         case 7:
-//           mvwaddch(win, i, j,'7');
-//         break;
-//         case 8:
-//           mvwaddch(win, i, j,'8');
-//         break;
-//         case 9:
-//           mvwaddch(win, i, j,'9');
-//         break;
-//         default:
-//           mvwaddch(win, i, j,'d');
-//       }
-//     }
-//   }
-// }
 
 bool calculateNextState(){
   int numberOfNeighbours[REAL_HEIGHT][REAL_WIDTH];
@@ -382,8 +342,8 @@ int main() {
   bool changes = false;
   do {
     readSubwindow();
-    curs_set(0);
-    scrollok(stdscr, TRUE);
+    curs_set(0); // To disable cursor
+    scrollok(stdscr, TRUE); // These two lines are used two change the behaviour of getchar. Now the function will not block the process until the user types.
     nodelay(stdscr, TRUE);
     changes = calculateNextState(); // Modify
     printFieldToSubwindow();
