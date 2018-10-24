@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include "figures.h"
 
-	
+
 #define ESCAPE_BUTTON 27
 
 // CONSTANTS
@@ -29,10 +29,12 @@ bool **createField(int sqy, int sqx) {
   }
   for (int y = 0; y < sqy; y++) {
     for (int x = 0; x < sqx; x++)
-      f[y][x] = false; 
+      f[y][x] = false;
   }
   return f;
 }
+
+
 
 void clearField(){
   for (int y = 0; y < REAL_HEIGHT; y++) {
@@ -90,13 +92,13 @@ void drawSquare() {
   setPaddingAndReals();
   int limitx = WIDTH - 1;
   int limity = HEIGHT - 1;
-  
+
   // Drawing corners of the subwindow
   mvaddch(Y_PADDING, X_PADDING, '+');
   mvaddch(limity, X_PADDING, '+');
   mvaddch(Y_PADDING, limitx, '+');
   mvaddch(limity, limitx, '+');
-  
+
   // Drawing borders of the subwindow
   for (int y = Y_PADDING + 1; y < limity; y++) {
     mvaddch(y, X_PADDING, '|');
@@ -104,7 +106,7 @@ void drawSquare() {
   }
   for (int x = X_PADDING + 1; x < limitx; x++) {
     mvaddch(Y_PADDING, x, '-');
-    mvaddch(limity, x, '-'); 
+    mvaddch(limity, x, '-');
   }
 }
 /**
@@ -222,7 +224,7 @@ void convolution_2D(int numberOfNeighbours[][REAL_WIDTH]) {
     for (int j = 0; j < REAL_WIDTH; j++){ // columns
       numberOfNeighbours[i][j] = 0;
       for (int m = 0; m < 3; m++){     // kernel rows
-        for (int n = 0; n < 3; n++){ // kernel column       
+        for (int n = 0; n < 3; n++){ // kernel column
           // index of input signal, used for checking boundary
           int ii = i + (m - 1);
           int jj = j + (n - 1);
@@ -252,6 +254,7 @@ bool updateFieldWithNextState(int numberOfNeighbours[][REAL_WIDTH]) {
         changes++;
     }
   }
+	freeField(field,HEIGHT-Y_PADDING-2, WIDTH-X_PADDING-2);
   field = new_field;
   if(changes > 0)
     return true;
@@ -270,32 +273,32 @@ int kbhit(void)
   struct termios oldt, newt;
   int ch;
   int oldf;
- 
+
   tcgetattr(STDIN_FILENO, &oldt);
   newt = oldt;
   newt.c_lflag &= ~(ICANON | ECHO);
   tcsetattr(STDIN_FILENO, TCSANOW, &newt);
   oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
   fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
- 
+
   ch = getchar();
   fflush(stdin);
- 
+
   tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
   fcntl(STDIN_FILENO, F_SETFL, oldf);
- 
+
   if(ch != EOF)
   {
     ungetc(ch, stdin);
     return 1;
   }
- 
+
   return 0;
 }
 
 bool handlePossibles(){
   chtype ch = getch();
-  if(ch == ESCAPE_BUTTON) 
+  if(ch == ESCAPE_BUTTON)
     return false;
   else if(ch == 'P' || ch == 'p'){
     fflush(stdin);
@@ -304,7 +307,7 @@ bool handlePossibles(){
     while(getch() != ('p' || 'P'))
       return true;
   }
-  else 
+  else
     return true;
 }
 
@@ -335,7 +338,7 @@ int main() {
       mymove(in);
     }
   }while(in !='\n');
-  
+
   if(!predefinedFigure)
     readSubwindow();
 
@@ -352,6 +355,8 @@ int main() {
     if(!handlePossibles())
       break;
   } while (changes);
+
+	freeField(field,HEIGHT-Y_PADDING-2, WIDTH-X_PADDING-2);
   enditall();
   return -1;
 }
