@@ -56,6 +56,7 @@ int main() {
     if(!handlePossibles())
       break;
   } while (changes);
+
 	freeField(field,HEIGHT-Y_PADDING-2, WIDTH-X_PADDING-2);
   enditall();
   return -1;
