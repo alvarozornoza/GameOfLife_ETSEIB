@@ -6,7 +6,7 @@ int initall(void)
 	return 0;
 };
 
-int enditall(bool **f, int sqy, int sqx)
+int enditall(void)
 {
 	endwin();			/* End curses mode 		  */
 	return 0;

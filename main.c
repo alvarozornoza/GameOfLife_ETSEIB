@@ -10,7 +10,6 @@
 /*
    TODO:
 	   - esc dosen't work if the game is not started (before pressing ENTER)
-		 - include the possibility of delete a cell in input mode ( i.e if one presses space bar on a live cell it should deads)
      - OPTIONAL : make the field dynamic, I ll try this next days.
 */
 int main() {
@@ -23,14 +22,15 @@ int main() {
   do {
     in = getch();
     if (in == ' ') {
-      waddch(win,BLOCK);
+
+      waddch(win,winch(win) != ' ' ? ' ': BLOCK);
       rmove(0,-1);
       wrefresh(win);
     }
     else if(in == '1' || in == '2' || in == '3' || in == '4'){
       wclear(win);
       wrefresh(win);
-      clearField();
+      //clearField();
       getPredefinedFigure(in);
       printFieldToSubwindow();
       predefinedFigure = true;

@@ -12,8 +12,8 @@ void clearField(){
 void printFieldToSubwindow() {
   wmove(win, 0, 0);
   wrefresh(win);
-  for (int y = 0; y < REAL_HEIGHT; y++) {
-    for (int x = 0; x < REAL_WIDTH; x++) {
+  for (int y = 0; y < HEIGHT-Y_PADDING-2; y++) {
+    for (int x = 0; x < WIDTH-X_PADDING-2; x++) {
       mvwaddch(win, y, x, field[y][x] ? BLOCK : ' ');
     }
   }
