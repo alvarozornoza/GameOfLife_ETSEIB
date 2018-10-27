@@ -30,7 +30,7 @@ int main() {
     else if(in == '1' || in == '2' || in == '3' || in == '4'){
       wclear(win);
       wrefresh(win);
-      //clearField();
+      clearField();
       getPredefinedFigure(in);
       printFieldToSubwindow();
       predefinedFigure = true;
