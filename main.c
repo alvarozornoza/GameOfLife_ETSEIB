@@ -9,7 +9,6 @@
 
 /*
    TODO:
-	   - esc dosen't work if the game is not started (before pressing ENTER)
      - OPTIONAL : make the field dynamic, I ll try this next days.
 */
 int main() {
