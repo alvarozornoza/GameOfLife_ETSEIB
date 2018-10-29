@@ -49,6 +49,8 @@ void setPaddingAndReals(){
   Y_PADDING = 3;
   REAL_WIDTH = WIDTH-X_PADDING-2;
   REAL_HEIGHT = HEIGHT-Y_PADDING-2;
+	FIELD_POS[0] = 0; // height 
+	FIELD_POS[1] = 0; // width
 }
 
 void startGame() {

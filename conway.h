@@ -10,7 +10,9 @@
 #define BLOCK  ' ' | A_REVERSE
 #define ESCAPE_BUTTON 27
 
-int WIDTH, HEIGHT, REAL_WIDTH, REAL_HEIGHT, X_PADDING, Y_PADDING;
+int WIDTH, HEIGHT, REAL_WIDTH, REAL_HEIGHT, X_PADDING, Y_PADDING, LIVE_CELLS;
+int FIELD_POS[2];
+int new_dim[4];
 WINDOW *win;
 bool **field;
 
@@ -33,9 +35,13 @@ void rmove(int,int);
 void mymove(chtype);
 void readfileAndPrint(char *);
 void getPredefinedFigure(chtype);
+void cleanMenu(void);
+void getStats(void);
 
 // logic functions
-void convolution_2D(int numberOfNeighbours[][REAL_WIDTH]);
-bool updateFieldWithNextState(int numberOfNeighbours[][REAL_WIDTH]);
+bool ** convolution_2D(void);
+void getNewDimensions(void);
+void updateFieldWithNextState(bool **, int, int);
 bool calculateNextState(void);
 bool handlePossibles(void);
+void check_dimensions(int , int );
