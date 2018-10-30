@@ -73,18 +73,18 @@ void getNewDimensions(){
    * lines/columns using the coordinates in 'new_dim' and adding 2 to have one
    * additional empty line/column on each side (to avoid losing cells at the
    * borders).
-   * Dimensions remain bounded by 'thresh'.
    */
   int thresh = 300;
   REAL_HEIGHT = new_dim[1]-new_dim[0]+1+2;
   REAL_WIDTH = new_dim[3]-new_dim[2]+1+2;
-  if (REAL_HEIGHT >= thresh) {REAL_HEIGHT=thresh;} //threshold
-  if (REAL_WIDTH >= thresh) {REAL_WIDTH=thresh;} //threshold
+
+  /* Dimensions remain bounded between 1 and 'thresh' */
+  if (REAL_HEIGHT < 1) {REAL_HEIGHT = 1;}
+  if (REAL_WIDTH < 1) {REAL_WIDTH = 1;}
+  if (REAL_HEIGHT >= thresh) {REAL_HEIGHT=thresh;}
+  if (REAL_WIDTH >= thresh) {REAL_WIDTH=thresh;}
 }
 
-/*
-  TODO : I m not sure if it is all correct here !!
-*/
 void updateFieldWithNextState (bool ** new_field, int old_height, int old_width){
   /* Store computed new state into global 'field' variable by copying new_field
    * to a field with correct dimensions.
