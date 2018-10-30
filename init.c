@@ -2,19 +2,19 @@
 
 int initall(void)
 {
-	initscr();			/* Start curses mode 		  */
+	initscr();			/* Start curses mode */
 	return 0;
 };
 
 int enditall(void)
 {
-	endwin();			/* End curses mode 		  */
+	endwin();			/* End curses mode */
 	return 0;
 };
 
 int freeField(bool **f, int sqy, int sqx)
 {
-	/*Free allocated memory for the field */
+	/* Free allocated memory for the field */
 	for (int j = 0; j < sqy; j++) {
 		free(f[j]);
 	}
@@ -22,21 +22,29 @@ int freeField(bool **f, int sqy, int sqx)
 	return 0;
 }
 
-/* create the initial field of dimension sqy * sqx */
 bool **createField(int  sqy, int sqx) {
-  bool **f = (bool **)malloc(sizeof(bool *) * sqy);
+	/* Create the initial field of dimension sqy*sqx.
+	 *   sqy: # of lines
+	 *	 sqx: # of columns
+	 * The field is a double-pointer structure of booleans. 'true' will represent
+	 * alive cells and 'false' dead ones.
+	 */
+  bool **f = (bool **) malloc(sizeof(bool *) * sqy);
   for (int j = 0; j < sqy; j++) {
     f[j] = (bool *)malloc(sizeof(bool) * sqx);
   }
   for (int y = 0; y < sqy; y++) {
     for (int x = 0; x < sqx; x++)
-      f[y][x] = false;
+      f[y][x] = false;										/* Initially, all cells are dead. */
   }
   return f;
 }
 
 
 void readSubwindow() {
+	/* This funcion is used to retrieve the initial state entered by the user.
+	 * A space ' ' character is used to indicate an alive cell.
+	 */
   for (int y = 0; y < HEIGHT-Y_PADDING-2; y++) {
     for (int x = 0; x < WIDTH-X_PADDING-2; x++) {
       field[y][x] = mvwinch(win,y,x) != ' ' ? true: false;
@@ -45,11 +53,12 @@ void readSubwindow() {
 }
 
 void setPaddingAndReals(){
+	/* This function initialize the values of the global variables. */
   X_PADDING = 0;
-  Y_PADDING = 3;
+  Y_PADDING = 4;		// Used for header display
   REAL_WIDTH = WIDTH-X_PADDING-2;
   REAL_HEIGHT = HEIGHT-Y_PADDING-2;
-	FIELD_POS[0] = 0; // height 
+	FIELD_POS[0] = 0; // height
 	FIELD_POS[1] = 0; // width
 }
 
@@ -61,12 +70,11 @@ void startGame() {
   noecho();
 }
 
-/**
- * Draws the border of the field game:
- * + for vertexes
- * | or - for edges
-*/
 void drawSquare() {
+	/* Draws the border of the field:
+	 * 		+ for vertexes
+	 * 		| for vertical edges, - for horizontal edges
+	 */
   int xx, yy;
   getmaxyx(stdscr, yy, xx);
   WIDTH = xx;

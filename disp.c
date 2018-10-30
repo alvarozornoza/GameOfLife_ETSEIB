@@ -1,8 +1,7 @@
 #include "conway.h"
 
-
-
 void clearField(){
+  /* Set all cells to 'dead' state. */
   for (int y = 0; y < REAL_HEIGHT; y++) {
     for (int x = 0; x < REAL_WIDTH; x++)
       field[y][x] = false;
@@ -18,6 +17,9 @@ void printFieldToSubwindow() {
       y_field = y - FIELD_POS[0];
       x_field = x - FIELD_POS[1];
       if(y_field<REAL_HEIGHT && y_field>=0 && x_field<REAL_WIDTH && x_field>=0){
+        // If the window cell belongs to the field, check its value and display
+        // the corresponding character: white or black (empty) cell.
+        // Elsewise, display an empty cell.
         mvwaddch(win, y, x, field[y_field][x_field] ? BLOCK : ' ');
       }
       else{mvwaddch(win, y, x,' ');}
@@ -27,30 +29,21 @@ void printFieldToSubwindow() {
   wrefresh(win);
 }
 
-
-
-
-/*
- * Prints menu lines
-*/
 void printMenu(){
-  printw("Conway's Game of Live\n");
-  printw("Press W (up), S (down), A(right) or D(left) to move, SPACE to fill the cell, ENTER to start, P to pause aland ESC to exit\n");
-  printw("Press 1 to print figure R-Pentomino, Diehard (2), Acorn (3), Gosper Glider (4)\n");
+  /* Prints header menu lines */
+  printw("Conway's Game of Life\n");
+  printw("Press W (up), S (down), A(right) or D(left) to move, SPACE to fill/clear the cell, ENTER to start, P to pause and ESC to exit.\n");
+  printw("Press number to print figure: R-Pentomino (1), Diehard (2), Acorn (3), Gosper Glider (4).\n");
 }
 
-/*
- * Erases the value of the ncurses window.
- * Prints header
- * Prints field border
-*/
 void resetWindow() {
-  erase();
-  printMenu();
-  drawSquare();
+  erase();        // Erase the value of the ncurses window
+  printMenu();    // Prints header
+  drawSquare();   // Prints field border
 }
 
 void rmove(int b, int a){
+  /* Move cursor in the window */
 	int y,x;
 	getyx(win,y,x);
   wmove(win,y+b,x+a);
@@ -58,6 +51,7 @@ void rmove(int b, int a){
 }
 
 void mymove(chtype c){
+  /* Defines the key <-> moves correspondances.*/
   switch(c)
   {
 	  case 'w':
@@ -75,8 +69,8 @@ void mymove(chtype c){
   }
 }
 
-
 void readfileAndPrint(char* name){
+  /* Read predefined figure file and fill the field */
 	int fd;
 	//if((fd = open(name, O_RDONLY)) == -1)
 	fd = open(name, O_RDONLY);
@@ -110,7 +104,6 @@ void readfileAndPrint(char* name){
 	close(fd);
 }
 
-
 void getPredefinedFigure(chtype in){
     switch (in){
         case '1':
@@ -129,6 +122,7 @@ void getPredefinedFigure(chtype in){
 }
 
 bool handlePossibles(){
+  /* Used to define other keyboard functions: ESCAPE and PAUSE */
   chtype ch = getch();
   if(ch == ESCAPE_BUTTON)
     return false;
