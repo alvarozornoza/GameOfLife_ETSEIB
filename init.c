@@ -55,7 +55,7 @@ void readSubwindow() {
 void setPaddingAndReals(){
 	/* This function initialize the values of the global variables. */
   X_PADDING = 0;
-  Y_PADDING = 3;		// Used for header display
+  Y_PADDING = 4;		// Used for header display
   REAL_WIDTH = WIDTH-X_PADDING-2;
   REAL_HEIGHT = HEIGHT-Y_PADDING-2;
 	FIELD_POS[0] = 0; // height
