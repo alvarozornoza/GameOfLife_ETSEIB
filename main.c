@@ -1,33 +1,28 @@
 #include "conway.h"
 /*
- * WORKS
-*/
-/*
- * Fill the field global variable of values printed on the screen.
- * TODO
-*/
-
-/*
    TODO:
 	   - esc dosen't work if the game is not started (before pressing ENTER)
      -error at the second iteration
 */
 int main() {
+  // Initialize window and create field of dead cells
   startGame();
+  // Create and refresh curses window
   win = derwin(stdscr, REAL_HEIGHT, REAL_WIDTH, Y_PADDING+1, X_PADDING+1);
   wrefresh(win);
   chtype in;
   bool predefinedFigure = false;
-  // INIT
+  // Initialize state using user input
   do {
+    // Cell by cell manual selection
     in = getch();
     if (in == ' ') {
-
       waddch(win,winch(win) != ' ' ? ' ': BLOCK);
       rmove(0,-1);
       wrefresh(win);
     }
     else if(in == '1' || in == '2' || in == '3' || in == '4'){
+      // Predefined figure selection
       wclear(win);
       wrefresh(win);
       //clearField();
@@ -38,20 +33,24 @@ int main() {
     else{
       mymove(in);
     }
-  }while(in !='\n');
+  }while(in !='\n');  // Start when 'ENTER' key is pressed
 
   if(!predefinedFigure)
     readSubwindow();
 
-
-
   bool changes = false;
   curs_set(0); // To disable cursor
-  scrollok(stdscr, TRUE); // These two lines are used two change the behaviour of getchar. Now the function will not block the process until the user types.
-  nodelay(stdscr, TRUE);
+
   int count = 0;
   do{
-    changes = calculateNextState(); // Modify
+    // These two lines are used two change the behaviour of getchar.
+    // Now the function will not block the process until the user types.
+    // Used to implement the PAUSE option.
+    scrollok(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
+
+    // Compute next state and display it!
+    changes = calculateNextState();
     printFieldToSubwindow() ;
     wrefresh(win);
     cleanMenu();
@@ -64,10 +63,10 @@ int main() {
     //  break;
   } while (changes);
 
-
-
+  // End of game: free allocated memory and close ncurses window
 	freeField(field,REAL_HEIGHT,REAL_WIDTH);
   enditall();
+
 /*
   printf(" y min = %d\n",new_dim[0] );
   printf(" y max = %d\n",new_dim[1] );
