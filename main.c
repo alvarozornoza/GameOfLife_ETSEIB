@@ -25,7 +25,7 @@ int main() {
       // Predefined figure selection
       wclear(win);
       wrefresh(win);
-      //clearField();
+      clearField();
       getPredefinedFigure(in);
       printFieldToSubwindow();
       predefinedFigure = true;
