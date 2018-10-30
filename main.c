@@ -41,7 +41,7 @@ int main() {
   bool changes = false;
   curs_set(0); // To disable cursor
 
-  int count = 0;
+  //int count = 0;
   do{
     // These two lines are used two change the behaviour of getchar.
     // Now the function will not block the process until the user types.
