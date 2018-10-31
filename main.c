@@ -1,3 +1,5 @@
+// All the functions were developed by coder2 adviced by coder4.
+
 #include "conway.h"
 
 int main(int argc, char **argv) {

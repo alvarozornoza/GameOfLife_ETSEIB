@@ -1,3 +1,5 @@
+// All the functions were developed by coder4 adviced by coder2. Excepting the function convolution_2D that was developed by coder2.
+
 #include "conway.h"
 
 int changes;      // Number of changes state k and state k+1

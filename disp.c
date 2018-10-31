@@ -1,3 +1,5 @@
+// All the functions were developed by coder1 adviced by coder3.
+
 #include "conway.h"
 
 void clearField(){

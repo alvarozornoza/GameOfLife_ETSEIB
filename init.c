@@ -1,3 +1,5 @@
+// All the functions were developed by coder4 adviced by coder1.
+
 #include "conway.h"
 
 int initall(void)
