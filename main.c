@@ -38,10 +38,7 @@ int main() {
   if(!predefinedFigure)
     readSubwindow();
 
-  bool changes = false;
-  curs_set(0); // To disable cursor
-
-  //int count = 0;
+  bool changes = false; // This flag will indicate wheter the new state is different or not than the current state.
   do{
     // These two lines are used two change the behaviour of getchar.
     // Now the function will not block the process until the user types.
@@ -61,7 +58,7 @@ int main() {
     //count++;
     //if (count==300)
     //  break;
-  } while (changes);
+  } while (changes); // If the flag is true (same state), the game finishes.
 
   // End of game: free allocated memory and close ncurses window
 	freeField(field,REAL_HEIGHT,REAL_WIDTH);
