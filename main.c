@@ -30,6 +30,11 @@ int main() {
       printFieldToSubwindow();
       predefinedFigure = true;
     }
+    else if(in == ESCAPE_BUTTON){
+	    freeField(field,REAL_HEIGHT,REAL_WIDTH);
+  	  enditall();
+  	  return -1;
+    }
     else{
       mymove(in);
     }
