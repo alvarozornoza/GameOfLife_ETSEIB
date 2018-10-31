@@ -32,7 +32,8 @@ void printFieldToSubwindow() {
 void printMenu(){
   /* Prints welcome menu lines */
   printw("Conway's Game of Life\n");
-  printw("Press W (up), S (down), A(right) or D(left) to move, SPACE to fill/clear the cell, ENTER to start, P to pause and ESC to exit.\n");
+  printw("Press W (up), S (down), A(right) or D(left) to move\n");
+  printw("Press SPACE to fill/clear the cell, ENTER to start, P to pause and ESC to exit.\n");
   printw("Press number to print figure: R-Pentomino (1), Diehard (2), Acorn (3), Gosper Glider (4).\n");
 }
 
@@ -44,7 +45,8 @@ void cleanMenu(){
   wclrtoeol(stdscr);
   move(2,0);
   wclrtoeol(stdscr);
-
+  move(3,0);
+  wclrtoeol(stdscr);
 }
 
 void getStats(){
