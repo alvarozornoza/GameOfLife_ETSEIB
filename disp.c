@@ -145,7 +145,7 @@ void getPredefinedFigure(chtype in){
 }
 
 bool handlePossibles(){
-  /* Used to define other keyboard functions: ESCAPE and PAUSE */
+  /* Used to handle if the user wants to pause or exit the game */
   chtype ch = getch();
   if(ch == ESCAPE_BUTTON)
     return false;
