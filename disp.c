@@ -49,7 +49,7 @@ void cleanMenu(){
 
 void getStats(){
   /* Prints some figures in the header menu */
-  mvwprintw(stdscr,0,0,"LIVE_CELLS = %d",LIVE_CELLS);
+  mvwprintw(stdscr,0,0,"ITERATION = %d, LIVE_CELLS = %d",ITERATION_NUMBER,LIVE_CELLS);
   mvwprintw(stdscr,1,0,"REAL_HEIGHT = %d, REAL_WIDTH = %d",REAL_HEIGHT,REAL_WIDTH);
   mvwprintw(stdscr,2,0,"FIELD_POS = [ %d, %d]",FIELD_POS[0],FIELD_POS[1]);
   mvwprintw(stdscr,3,0,"Press P to pause and ESC to exit.\n");

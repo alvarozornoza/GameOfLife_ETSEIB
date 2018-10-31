@@ -117,6 +117,8 @@ bool calculateNextState() {
 
   // Compute next state and store it in the new variable
   new_field = convolution_2D();
+  // Updating iteration number;
+  ITERATION_NUMBER++;
   // Free memory containing old state
   freeField(field,REAL_HEIGHT, REAL_WIDTH);
   // Update dimensions of the field
