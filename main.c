@@ -71,26 +71,11 @@ int main(int argc, char **argv) {
     usleep(300000);
     if(!handlePossibles())
       break;
-    //count++;
-    //if (count==300)
-    //  break;
   } while (changes); // If the flag is true (same state), the game finishes.
 
   // End of game: free allocated memory and close ncurses window
 	freeField(field,REAL_HEIGHT,REAL_WIDTH);
   enditall();
 
-/*
-  printf(" y min = %d\n",new_dim[0] );
-  printf(" y max = %d\n",new_dim[1] );
-  printf(" x min = %d\n",new_dim[2] );
-  printf(" x max = %d\n",new_dim[3] );
-  printf("real height = %d\n", REAL_HEIGHT);
-  printf("real width = %d\n", REAL_WIDTH);
-  printf("FIELD_POS = [%d]*[%d]\n",FIELD_POS[0],FIELD_POS[1]);
-  printf("count = %d\n",count );
-  */
   return -1;
 }
-
-/*************************************************/
