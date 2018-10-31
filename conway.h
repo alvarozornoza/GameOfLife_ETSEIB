@@ -4,6 +4,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
 #include "figures.h"
 
 /* CONSTANTS and global variables declaration */

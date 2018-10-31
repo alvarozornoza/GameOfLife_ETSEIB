@@ -95,7 +95,6 @@ void mymove(chtype c){
 void readfileAndPrint(char* name){
   /* Read predefined figure file and fill the field */
 	int fd;
-	//if((fd = open(name, O_RDONLY)) == -1)
 	fd = open(name, O_RDONLY);
   int figure_height = 0;
 	int figure_width = 0;

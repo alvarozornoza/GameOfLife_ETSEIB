@@ -1,10 +1,12 @@
 #include "conway.h"
-/*
-   TODO:
-	   - esc dosen't work if the game is not started (before pressing ENTER)
-     -error at the second iteration
-*/
-int main() {
+
+int main(int argc, char **argv) {
+  bool printFigureInStartup = false;
+  char figureName[100];
+  if(argc > 1){ // In case the user wants to load a predefined figure
+    strcpy(figureName,argv[1]);
+    printFigureInStartup = true;
+  }
   // Initialize window and create field of dead cells
   startGame();
   // Create and refresh curses window
@@ -13,6 +15,15 @@ int main() {
   chtype in;
   bool predefinedFigure = false;
   // Initialize state using user input
+  if(printFigureInStartup){
+    wclear(win);
+    wrefresh(win);
+    clearField();
+    readfileAndPrint(figureName);
+    printFieldToSubwindow();
+    predefinedFigure = true;
+  }
+
   do {
     // Cell by cell manual selection
     in = getch();
