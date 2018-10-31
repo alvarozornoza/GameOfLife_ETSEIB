@@ -27,12 +27,14 @@ int main(int argc, char **argv) {
   do {
     // Cell by cell manual selection
     in = getch();
-    if (in == ' ') {
+    switch(in){
+      case ' ':
+        // Moving along the field
       waddch(win,winch(win) != ' ' ? ' ': BLOCK);
       rmove(0,-1);
       wrefresh(win);
-    }
-    else if(in == '1' || in == '2' || in == '3' || in == '4'){
+      break;
+      case '1': case '2': case '3': case '4':
       // Predefined figure selection
       wclear(win);
       wrefresh(win);
@@ -40,13 +42,14 @@ int main(int argc, char **argv) {
       getPredefinedFigure(in);
       printFieldToSubwindow();
       predefinedFigure = true;
-    }
-    else if(in == ESCAPE_BUTTON){
+      break;
+      case ESCAPE_BUTTON:
+        // Exiting the game
 	    freeField(field,REAL_HEIGHT,REAL_WIDTH);
   	  enditall();
   	  return -1;
-    }
-    else{
+      break;
+      default:
       mymove(in);
     }
   }while(in !='\n');  // Start when 'ENTER' key is pressed
